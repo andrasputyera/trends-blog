@@ -1,18 +1,34 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Home</h1>
+    <div v-if="error">{{ error }}</div>
+    <!-- If posts array has values already inside it (checking the lengths) -->
+    <div v-if="posts.length">
+      <PostList :posts="posts" />
+    </div>
+    <!-- Otherwise data is still loading (no lengths)-->
+    <div v-else>
+      <Spinner />
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import PostList from '@/components/PostList.vue';
+import getPosts from '@/composables/getPosts';
+import Spinner from '@/components/Spinner.vue';
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  components: { PostList, Spinner },
+  setup() {
+    const { posts, error, load } = getPosts()
+
+    load()
+
+    return { posts, error }
+
   }
 }
 </script>
