@@ -15,13 +15,13 @@ import SinglePost from '@/components/SinglePost.vue';
       props: ['posts'],
       components: { SinglePost },
       setup(props) {
-          onMounted(() => console.log('component mounted'))
-          onUnmounted(() => console.log('component umounted'))
-          onUpdated(() => console.log('component updated'))
+        //   onMounted(() => console.log('component mounted'))
+        //   onUnmounted(() => console.log('component umounted'))
+        //   onUpdated(() => console.log('component updated'))
       }  
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

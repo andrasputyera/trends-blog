@@ -21,6 +21,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
     setup() {
@@ -28,6 +29,8 @@ export default {
     const body = ref('')
     const tags = ref([])
     const tag = ref('')
+
+    const router = useRouter()
     
     const handleKeydown = () => {
       if (!tags.value.includes(tag.value)) {
@@ -52,6 +55,9 @@ export default {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(post)
         })
+
+        // After submitting the form, we want to redirect back to the 'Home' page
+        router.push({ name: 'Home' })
     }
     
     return { body, title, tags, tag, handleKeydown, handleSubmit }
