@@ -9,7 +9,7 @@ const getPost = (id) => {
       try {
         // Simulating a delay
         await new Promise(resolve => {
-            setTimeout(resolve, 2000)
+            setTimeout(resolve, 1000)
         })
 
         // The data will be fetched from the route along with the id of the post we are selecting  

@@ -1,6 +1,6 @@
 <template>
     <div class="create">
-        <form>
+        <form @submit.prevent="handleSubmit">
             <label>Title</label>
             <input v-model="title" type="text" required>
             <label>Content</label>
@@ -38,7 +38,23 @@ export default {
       // Clear the input field after entering value
       tag.value = ''
     }
-    return { body, title, tags, tag, handleKeydown }
+
+    const handleSubmit = async () => {
+        const post = {
+            id: '',
+            title: title.value,
+            body: body.value,
+            tags: tags.value
+        }
+
+        await fetch('http://localhost:3000/posts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(post)
+        })
+    }
+    
+    return { body, title, tags, tag, handleKeydown, handleSubmit }
   },
 }
 </script>
