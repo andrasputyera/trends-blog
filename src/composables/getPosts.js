@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { projectFirestore } from '@/firebase/config.js'
 
 const getPosts = () => {
     const posts = ref([])
@@ -6,17 +7,15 @@ const getPosts = () => {
 
     const load = async () => {
       try {
-        // Simulating a delay
-        await new Promise(resolve => {
-          setTimeout(resolve, 1000)
-      })
+        const response = await projectFirestore.collection('posts')
+         .orderBy('createdAt', 'desc') 
+         .get()
 
-        let data = await fetch('http://localhost:3000/posts')
-        if (!data.ok) {
-          throw Error('no data is available')
-        }
-        // We take the data that we receive and use the json method on it. Once it is done, the value updates the posts property
-        posts.value = await data.json()
+        // Update value of the posts array
+        posts.value = response.docs.map(doc => {
+          // Spread the properties and values into a new object
+          return { ...doc.data(), id: doc.id }
+        })
       }
       catch (err) {
         // err.message comes from the throw block Error ('no data is available')

@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { projectFirestore } from '@/firebase/config'
 
 // We need to pass in the id that we receive from selecting a specific post
 const getPost = (id) => {
@@ -7,18 +8,13 @@ const getPost = (id) => {
 
     const load = async () => {
       try {
-        // Simulating a delay
-        await new Promise(resolve => {
-            setTimeout(resolve, 1000)
-        })
-
-        // The data will be fetched from the route along with the id of the post we are selecting  
-        let data = await fetch('http://localhost:3000/posts/' + id)
-        if (!data.ok) {
-          throw Error('that post does not exist')
+        let response = await projectFirestore.collection('posts').doc(id).get()
+        
+        // We need to check if document exists
+        if (!response.exists) {
+          throw Error('That trends post does not exist')
         }
-        // We take the data that we receive and use the json method on it. Once it is done, the value updates a single post property
-        post.value = await data.json()
+        post.value = { ...response.data(), id: response.id }  
       }
       catch (err) {
         // err.message comes from the throw block Error ('no data is available')
